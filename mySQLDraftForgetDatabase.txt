@@ -1,0 +1,707 @@
+/*Creating Database of:
+Teams,
+drafted players,
+2021 hitter leaderboard,
+2021 pitcher leaderboard,
+2020 fielding leaderboard
+2021 hitter projections,
+2021 pitcher projections,
+2020 hitter leaderboard,
+2020 pitcher leaderboard,
+2019 fielding leaderboard
+*/
+
+CREATE TABLE teamNames (
+teamid INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+PRIMARY KEY(teamid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO teamNames
+(name
+, team)
+VALUES
+('Reuben', 'Montreal Recapitulation')
+, ('Jesse', 'Honolulu Scary Sharks')
+, ('Alden','Dublin Degenerates')
+, ('Nick','Santorini Tridents')
+, ('Ruel','Pittsburgh Phantasy Pirates')
+, ('Graham', 'Seattle Mets')
+, ('Sid', 'Singapore Merlions')
+, ('Benji', 'Rome Gladiators');
+
+CREATE TABLE finalPlayers (
+owner VARCHAR(50) DEFAULT NULL,
+playerid VARCHAR(50) NOT NULL,
+pickedid INT NOT NULL AUTO_INCREMENT,
+PRIMARY KEY(pickedid),
+INDEX name_idx (playerid)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE '/var/lib/mysql-files/FinalTeams.csv'
+INTO TABLE finalPlayers
+FIELDS TERMINATED BY ','
+(owner, playerid)
+SET pickedid = NULL;
+
+DROP TABLE IF EXISTS hitter2021June;
+
+CREATE TABLE hitter2021(
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+g SMALLINT NOT NULL,
+pa SMALLINT NOT NULL,
+hr SMALLINT NOT NULL,
+r SMALLINT NOT NULL,
+rbi SMALLINT NOT NULL,
+sb SMALLINT NOT NULL,
+bbperc VARCHAR(50) NOT NULL,
+kperc VARCHAR(50) NOT NULL,
+iso DECIMAL(4,3),
+babip DECIMAL(4,3),
+avg DECIMAL(4,3),
+obp DECIMAL(4,3),
+slg DECIMAL(4,3),
+woba DECIMAL(4,3),
+xwoba VARCHAR(50) NOT NULL,
+wrcplus VARCHAR(50) NOT NULL,
+bsr DECIMAL(3,1),
+off DECIMAL(3,1),
+def DECIMAL(3,1),
+war DECIMAL(3,1),
+playerid VARCHAR(50) NOT NULL,
+PRIMARY KEY(playerid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//Hitters2021.csv'
+INTO TABLE hitter2021
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS
+(name, team, g, pa, hr, r, rbi, sb, bbperc, kperc, iso, babip, avg, obp, slg, woba, xwoba, wrcplus, bsr, off, def, war, playerid)
+;
+
+
+DROP TABLE IF EXISTS pitcher2021June;
+
+CREATE TABLE pitcher2021 (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+w SMALLINT,
+l SMALLINT,
+sv SMALLINT,
+g SMALLINT,
+gs SMALLINT,
+ip SMALLINT,
+k9 DECIMAL(3,1),
+bb9 DECIMAL(3,1),
+hr9 DECIMAL(3,1),
+babip DECIMAL(4,3),
+lobperc VARCHAR(50) DEFAULT NULL,
+gbperc VARCHAR(50) DEFAULT NULL,
+hrperfb VARCHAR(50) DEFAULT NULL,
+vfa VARCHAR(50) DEFAULT NULL,
+era DECIMAL(6,3),
+xera VARCHAR(50) DEFAULT NULL,
+fip DECIMAL(6,3),
+xfip DECIMAL(6,3),
+war DECIMAL(3,1),
+playerid VARCHAR(50) NOT NULL,
+PRIMARY KEY(playerid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//Pitchers2021.csv'
+INTO TABLE pitcher2021
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+DROP TABLE IF EXISTS fielding2020; 
+
+CREATE TABLE fielding2020 (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+pos VARCHAR(50) NOT NULL,
+g SMALLINT NOT NULL,
+gs SMALLINT NOT NULL,
+inn DECIMAL (5,1),
+po VARCHAR(50) NOT NULL,
+a VARCHAR(50) NOT NULL,
+e VARCHAR(50) NOT NULL,
+fe VARCHAR(50) NOT NULL,
+te VARCHAR(50) NOT NULL,
+dp VARCHAR(50) NOT NULL,
+dps VARCHAR(50) NOT NULL,
+dpt VARCHAR(50) NOT NULL,
+dpf VARCHAR(50) DEFAULT NULL,
+scp VARCHAR(50) DEFAULT NULL,
+sb VARCHAR(50) DEFAULT NULL,
+cs VARCHAR(50) DEFAULT NULL,
+pb VARCHAR(50) DEFAULT NULL,
+wp VARCHAR(50) DEFAULT NULL,
+fp VARCHAR(50) DEFAULT NULL,
+tz VARCHAR(50) DEFAULT NULL,
+playerid VARCHAR(50) NOT NULL,
+fieldingID INT NOT NULL AUTO_INCREMENT,
+PRIMARY KEY(fieldingID),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//fielding2020.csv'
+INTO TABLE fielding2020
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(name, team,pos,g,gs,inn,po,a,e,fe,te,dp,dps,dpt,dpf,scp,sb,cs,pb,wp,fp,tz,playerid);
+
+DROP TABLE IF EXISTS fielding2021; 
+
+CREATE TABLE fielding2021 (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+pos VARCHAR(50) NOT NULL,
+g SMALLINT NOT NULL,
+gs SMALLINT NOT NULL,
+inn DECIMAL (5,1),
+po VARCHAR(50) NOT NULL,
+a VARCHAR(50) NOT NULL,
+e VARCHAR(50) NOT NULL,
+fe VARCHAR(50) NOT NULL,
+te VARCHAR(50) NOT NULL,
+dp VARCHAR(50) NOT NULL,
+dps VARCHAR(50) NOT NULL,
+dpt VARCHAR(50) NOT NULL,
+dpf VARCHAR(50) DEFAULT NULL,
+scp VARCHAR(50) DEFAULT NULL,
+sb VARCHAR(50) DEFAULT NULL,
+cs VARCHAR(50) DEFAULT NULL,
+pb VARCHAR(50) DEFAULT NULL,
+wp VARCHAR(50) DEFAULT NULL,
+fp VARCHAR(50) DEFAULT NULL,
+tz VARCHAR(50) DEFAULT NULL,
+playerid VARCHAR(50) NOT NULL,
+fieldingID INT NOT NULL AUTO_INCREMENT,
+PRIMARY KEY(fieldingID),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//Fielding2021.csv'
+INTO TABLE fielding2021
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(name, team,pos,g,gs,inn,po,a,e,fe,te,dp,dps,dpt,dpf,scp,sb,cs,pb,wp,fp,tz,playerid);
+
+CREATE TABLE hitterProj (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+g SMALLINT NOT NULL,
+pa SMALLINT NOT NULL,
+ab SMALLINT NOT NULL,
+h SMALLINT NOT NULL,
+2b SMALLINT NOT NULL,
+3b SMALLINT NOT NULL,
+hr SMALLINT NOT NULL,
+r SMALLINT NOT NULL,
+rbi SMALLINT NOT NULL,
+bb SMALLINT NOT NULL,
+so SMALLINT NOT NULL,
+hbp SMALLINT NOT NULL,
+sb SMALLINT NOT NULL,
+cs SMALLINT NOT NULL,
+avg DECIMAL(4,3),
+obp DECIMAL(4,3),
+slg DECIMAL(4,3),
+ops DECIMAL(4,3),
+woba DECIMAL(4,3),
+fld DECIMAL(3,1),
+bsr DECIMAL(3,1),
+war DECIMAL(3,1),
+adp DECIMAL(4,1),
+playerid VARCHAR(50) NOT NULL,
+PRIMARY KEY(playerid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE '/var/lib/mysql-files/hitterProj.csv'
+INTO TABLE hitterProj
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+/*Keeper Rankings Fangraphs Auction Calc*/
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+pos VARCHAR(50) NOT NULL,
+adp DECIMAL(4,1),
+pa SMALLINT NOT NULL,
+mrbi
+mr
+mhr
+mobp
+msbcs
+pts
+apos
+dollars
+
+
+
+CREATE TABLE hitter2020 (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+g SMALLINT NOT NULL,
+pa SMALLINT NOT NULL,
+hr SMALLINT NOT NULL,
+r SMALLINT NOT NULL,
+rbi SMALLINT NOT NULL,
+sb SMALLINT NOT NULL,
+bbperc VARCHAR(50) DEFAULT NULL,
+kperc VARCHAR(50) DEFAULT NULL,
+iso DECIMAL(4,3),
+babip DECIMAL(4,3),
+avg DECIMAL(4,3),
+obp DECIMAL(4,3),
+slg DECIMAL(4,3),
+woba DECIMAL(4,3),
+wrcplus VARCHAR(50) DEFAULT NULL,
+ev VARCHAR(50) DEFAULT NULL,
+bsr DECIMAL(3,1),
+off DECIMAL(3,1),
+def DECIMAL(3,1),
+war DECIMAL(3,1),
+playerid VARCHAR(50) NOT NULL,
+PRIMARY KEY(playerid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE '/var/lib/mysql-files/hitter2020.csv'
+INTO TABLE hitter2020
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+
+
+
+CREATE TABLE pitcherProj (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+w SMALLINT NOT NULL,
+l SMALLINT NOT NULL,
+sv SMALLINT NOT NULL,
+hld SMALLINT NOT NULL,
+era DECIMAL(4,2),
+gs SMALLINT NOT NULL,
+g SMALLINT NOT NULL,
+ip SMALLINT NOT NULL,
+h SMALLINT NOT NULL,
+er SMALLINT NOT NULL,
+hr SMALLINT NOT NULL,
+so SMALLINT NOT NULL,
+bb SMALLINT NOT NULL,
+whip DECIMAL(3,2),
+k9 DECIMAL(4,2),
+bb9 DECIMAL(4,2),
+fip DECIMAL(4,2),
+war DECIMAL(3,1),
+adp DECIMAL(4,1),
+playerid VARCHAR(50) NOT NULL,
+PRIMARY KEY(playerid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE '/var/lib/mysql-files/pitcherProj.csv'
+INTO TABLE pitcherProj
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+CREATE TABLE pitcher2020 (
+name VARCHAR(50) NOT NULL,
+team VARCHAR(50) DEFAULT NULL,
+w SMALLINT NOT NULL,
+l SMALLINT NOT NULL,
+sv SMALLINT NOT NULL,
+g SMALLINT NOT NULL,
+gs SMALLINT NOT NULL,
+ip SMALLINT NOT NULL,
+kper9 DECIMAL(4,2),
+bbper9 DECIMAL(4,2),
+hrper9 DECIMAL(4,2),
+babip DECIMAL(4,3),
+lobperc VARCHAR(50) DEFAULT NULL,
+gbperc VARCHAR(50) DEFAULT NULL,
+hrperfb VARCHAR(50) DEFAULT NULL,
+ev VARCHAR(50) DEFAULT NULL,
+era DECIMAL(4,2),
+fip DECIMAL(4,2),
+xfip DECIMAL(4,2),
+war DECIMAL(3,1),
+playerid VARCHAR(50) NOT NULL,
+PRIMARY KEY(playerid),
+INDEX name_idx (name)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOAD DATA INFILE '/var/lib/mysql-files/pitcher2020.csv'
+INTO TABLE pitcher2020
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"' LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+/*QUERIES*/
+
+/*Create Ranking*/
+SELECT h.name, f.pos, h.war, f.g
+FROM hitterProj AS h
+JOIN fielding2020 AS f ON h.playerid = f.playerid
+WHERE f.g > 10
+ORDER BY h.war DESC
+LIMIT 50;
+
+/*Combine Pitchers and Hitters, compare by WAR*/
+SELECT s.name, s.pos, s.pa, s.war AS WAR
+FROM (SELECT h.name, f.pos, h.pa, h.war, f.g
+FROM hitterProj AS h
+JOIN fielding2020 AS f ON h.playerid = f.playerid
+WHERE f.g > 10) AS s
+UNION
+SELECT p.name, f.pos, p.ip, p.war AS WAR
+FROM pitcherProj AS p
+JOIN fielding2020 AS f ON p.playerid = f.playerid
+ORDER BY WAR DESC
+LIMIT 50;
+
+/*Output Ranking to CSV*/
+SELECT s.name, s.pos, s.pa, s.war AS WAR, s.playerid
+FROM (SELECT h.name, f.pos, h.pa, h.war, f.g, h.playerid
+FROM hitterProj AS h
+JOIN fielding2020 AS f ON h.playerid = f.playerid
+WHERE f.g > 10) AS s
+UNION
+SELECT p.name, f.pos, p.ip, p.war AS WAR, p.playerid
+FROM pitcherProj AS p
+JOIN fielding2020 AS f ON p.playerid = f.playerid
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/DraftRankings.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Goal: Select Distinct Positions from Fielding, replace LF,RF,CF with OF*/
+/*Step 1, replace LF*/
+SELECT name, pos, playerid,
+REPLACE(pos,'LF','OF')
+FROM fielding2020
+LIMIT 20;
+
+/*Step 2, new select statement:*/
+SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+	FROM
+	(SELECT name, pos, playerid,
+	REPLACE(pos,'LF','OF') AS lpos
+	FROM fielding2020) AS r
+WHERE pos = 'CF'
+LIMIT 20;
+
+/*Step 3, final select statement:*/
+SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c
+LIMIT 100;
+
+/*Update and Export Ranking*/
+SELECT h.name, f.rpos, h.pa, h.war AS WAR, h.playerid
+FROM hitterProj AS h
+JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c) AS f ON h.playerid = f.playerid
+UNION
+SELECT p.name, f.pos, p.ip, p.war AS WAR, p.playerid
+FROM pitcherProj AS p
+JOIN fielding2020 AS f ON p.playerid = f.playerid
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/DraftRankings.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Show 2020 Stats*/
+
+SELECT q.name, q.rpos, q.pa, q.war AS WAR, h2020.war AS WAR2020, h2020.pa AS PA2020, q.adp, q.playerid
+FROM hitter2020 as h2020
+LEFT JOIN (SELECT h.name, f.rpos, h.pa, h.war AS WAR, h.adp, h.playerid
+FROM hitterProj AS h
+JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c) AS f ON h.playerid = f.playerid
+) AS q ON q.playerid = h2020.playerid
+UNION
+SELECT x.name, x.pos, x.ip, x.war AS WAR, p2020.war, p2020.ip, x.adp,x.playerid
+FROM pitcher2020 AS p2020
+LEFT JOIN (SELECT p.name, f.pos, p.ip, p.war AS WAR, p.adp, p.playerid
+FROM pitcherProj AS p
+JOIN fielding2020 AS f ON p.playerid = f.playerid
+) AS x ON x.playerid = p2020.playerid
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/DraftRankings.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Ranking with players who didn't play 2020*/
+/*SELECT h.name, f.pos, h.war, f.g*/
+SELECT x.name, f.pos, x.PAIP, x.WAR, x.playerid
+FROM
+(SELECT h.name, h.pa AS PAIP, h.war AS WAR, h.playerid
+FROM hitterProj AS h
+UNION
+SELECT p.name, p.ip AS PAIP, p.war AS WAR, p.playerid
+FROM pitcherProj AS p) AS x 
+LEFT JOIN fielding2020 AS f ON x.playerid = f.playerid
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/OptOuts.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Full ranking including opt out players*/
+SELECT DISTINCT y.name, y.rpos, y.pa, y.WAR , ROUND(y.WAR/y.pa*700,1) AS prorProj, pick.owner, y.WAR2020, y.PA2020 AS PA2020, y.playerid
+FROM (SELECT q.name, q.rpos, q.pa, q.war AS WAR, ROUND(q.war/q.pa*700,1) AS prorProj, h2020.war AS WAR2020, h2020.pa AS PA2020, q.playerid
+FROM( SELECT h.name, f.rpos, h.pa, h.war AS WAR, h.playerid
+FROM hitterProj AS h
+LEFT JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c) AS f ON h.playerid = f.playerid) AS q
+LEFT JOIN hitter2020 AS h2020 ON h2020.playerid = q.playerid
+UNION
+SELECT x.name, x.pos, x.ip, x.war AS WAR, ROUND(x.war/x.ip*200,1) AS prorProj, p2020.war, p2020.ip,x.playerid
+FROM (SELECT p.name, f.pos, p.ip, p.war AS WAR, p.playerid
+FROM pitcherProj AS p
+LEFT JOIN fielding2020 AS f ON p.playerid = f.playerid) AS x 
+LEFT JOIN pitcher2020 AS p2020 ON p2020.playerid = x.playerid) AS y
+LEFT JOIN pickedPlayers AS pick ON y.playerid = pick.playerid
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/DraftRankings.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Full rankings with DH WAR*/
+/*DH Calculation is WAR minus (defensive runs)-10.1 runs per win minus (17.5 defensive runs*(gamesPlayed/162)/10.1 runs per win)
+/*It looks like the DH projections aren't providing a negative positional adjustment...*/
+SELECT DISTINCT y.name, y.rpos, y.pa, y.WAR , y.DHWAR, y.prorProj, pick.owner, y.WAR2020, y.PA2020 AS PA2020, y.playerid
+FROM (SELECT q.name, q.rpos, q.pa, q.war AS WAR, q.DHWAR, ROUND(q.war/q.pa*700,1) AS prorProj, h2020.war AS WAR2020, h2020.pa AS PA2020, q.playerid
+FROM( SELECT h.name, f.rpos, h.pa, h.war AS WAR, ROUND(h.war - h.fld/10.1 - ( 17.5*h.g/162)/10.1,1) AS DHWAR, h.playerid
+FROM hitterProj AS h
+LEFT JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c) AS f ON h.playerid = f.playerid) AS q
+LEFT JOIN hitter2020 AS h2020 ON h2020.playerid = q.playerid
+UNION
+SELECT x.name, x.pos, x.ip, x.war AS WAR, ' ' AS DHWAR, x.prorProj, p2020.war, p2020.ip,x.playerid
+FROM (SELECT p.name, f.pos, p.ip, p.war AS WAR, ROUND(p.war/p.ip*200,1) AS prorProj, p.playerid
+FROM pitcherProj AS p
+LEFT JOIN fielding2020 AS f ON p.playerid = f.playerid) AS x 
+LEFT JOIN pitcher2020 AS p2020 ON p2020.playerid = x.playerid) AS y
+LEFT JOIN pickedPlayers AS pick ON y.playerid = pick.playerid
+ORDER BY DHWAR DESC
+INTO OUTFILE '/var/lib/mysql-files/DraftRankings.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Full rankings with DH WAR*/
+/*DH Calculation is WAR minus (defensive runs)-10.1 runs per win minus (17.5 defensive runs*(gamesPlayed/162)/10.1 runs per win)
+/*It looks like the DH projections aren't providing a negative positional adjustment...*/
+SELECT DISTINCT y.name, y.rpos, y.pa, y.WAR , y.DHWAR, y.prorProj, pick.owner, y.WAR2020, y.PA2020 AS PA2020, y.playerid
+FROM (SELECT q.name, q.rpos, q.pa, q.war AS WAR, q.DHWAR, ROUND(q.war/q.pa*700,1) AS prorProj, h2020.war AS WAR2020, h2020.pa AS PA2020, q.playerid
+FROM( SELECT h.name, f.rpos, h.pa, h.war AS WAR, ROUND(h.off/10.1 + 2.14*h.pa/700 - 17.5/10.1/h.pa/700,1) AS DHWAR, h.playerid
+FROM hitter2020May AS h
+LEFT JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c) AS f ON h.playerid = f.playerid) AS q
+LEFT JOIN hitter2020 AS h2020 ON h2020.playerid = q.playerid
+UNION
+SELECT x.name, x.pos, x.ip, x.war AS WAR, ' ' AS DHWAR, x.prorProj, p2020.war, p2020.ip,x.playerid
+FROM (SELECT p.name, f.pos, p.ip, p.war AS WAR, ROUND(p.war/p.ip*200,1) AS prorProj, p.playerid
+FROM pitcher2020May AS p
+LEFT JOIN fielding2020 AS f ON p.playerid = f.playerid) AS x 
+LEFT JOIN pitcher2020 AS p2020 ON p2020.playerid = x.playerid) AS y
+LEFT JOIN pickedPlayers AS pick ON y.playerid = pick.playerid
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/MayRankings.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+/*Select Players for a certain team using monthly WAR*/
+/*playerID,Name,Pos,PAorIP,projWAR,proratedProj,DHWAR*/
+SELECT DISTINCT z.playerid, z.name, IFNULL(z.rpos,'DH'), z.pa, z.war, z.prorProj, z.DHWAR, f.owner
+FROM finalPlayers AS f
+LEFT JOIN  (SELECT DISTINCT y.name, y.rpos, y.pa, y.WAR , y.DHWAR, y.prorProj, pick.owner, y.WAR2020, y.PA2020 AS PA2020, y.playerid
+FROM (SELECT DISTINCT q.name, q.rpos, q.pa, q.war AS WAR, q.DHWAR, ROUND(q.war/q.pa*700,1) AS prorProj, h2020.war AS WAR2020, h2020.pa AS PA2020, q.playerid
+FROM( SELECT h.name, f.rpos, h.pa, h.war AS WAR, ROUND(h.off/10.1 + 2.14*h.pa/700 - 17.5/10.1/h.pa/700,1) AS DHWAR, h.playerid
+FROM hitter2020May AS h
+LEFT JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM
+(SELECT name, pos, playerid, g,
+REPLACE(pos,'LF','OF') AS lpos
+FROM fielding2020
+WHERE g > 9) AS r) AS c) AS f ON h.playerid = f.playerid) AS q
+LEFT JOIN hitter2020 AS h2020 ON h2020.playerid = q.playerid
+UNION
+SELECT DISTINCT x.name, x.pos, x.ip, x.war AS WAR, ' ' AS DHWAR, x.prorProj, p2020.war, p2020.ip, x.playerid
+FROM (SELECT DISTINCT p.playerid, p.name, f.pos, p.ip, p.war AS WAR, ROUND(p.war/p.ip*200,1) AS prorProj
+FROM pitcher2020May AS p
+LEFT JOIN fielding2020 AS f ON p.playerid = f.playerid) AS x
+LEFT JOIN pitcher2020 AS p2020 ON p2020.playerid = x.playerid) AS y
+LEFT JOIN finalPlayers AS pick ON y.playerid = pick.playerid) AS z ON z.playerid = f.playerid
+HAVING z.pa > 0
+ORDER BY WAR DESC
+INTO OUTFILE '/var/lib/mysql-files/MayRankingsTeams.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+--New Workbench Draft
+SELECT DISTINCT z.playerid, z.name, IFNULL(z.rpos,'DH'), z.pa, z.war, z.prorProj, z.DHWAR, fp.owner
+FROM(SELECT h.playerid, h.name, f.rpos, h.pa, h.war AS WAR, ROUND(h.war/h.pa*700,1) AS prorProj, ROUND(h.off/10.1 + 2.14*h.pa/700 - 17.5/10.1/h.pa/700,1) AS DHWAR
+FROM hitter2021June AS h
+LEFT JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM(SELECT l.name, l.pos, l.playerid, l.g, 
+REPLACE(l.pos,'LF','OF') AS lpos
+FROM (SELECT* FROM fielding2020
+	UNION
+	SELECT* FROM fielding2021
+WHERE g > 9) AS l) AS r) AS c) AS f ON h.playerid = f.playerid
+LEFT JOIN hitter2021june AS h2020 ON h2020.playerid = h.playerid) AS z 
+LEFT JOIN finalplayers as fp ON z.playerid = fp.playerid
+HAVING z.pa > 0
+ORDER BY z.war DESC
+INTO OUTFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//JuneRankingsHitters.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY "\n";
+
+SELECT DISTINCT z.playerid, z.name, z.pos, z.ip, z.war, z.prorProj, z.DHWAR, fp.owner
+FROM (SELECT DISTINCT x.playerid, x.name, x.pos, x.ip, x.war AS WAR, x.prorProj, ' ' AS DHWAR
+FROM (SELECT DISTINCT p.playerid, p.name, f.pos, p.ip, p.war AS WAR, ROUND(p.war/p.ip*200,1) AS prorProj
+FROM pitcher2021June AS p
+LEFT JOIN (SELECT* FROM fielding2020
+	UNION
+	SELECT* FROM fielding2021)  AS f ON p.playerid = f.playerid) AS x
+LEFT JOIN pitcher2021june AS p2020 ON p2020.playerid = x.playerid) AS z
+LEFT JOIN finalplayers AS fp ON z.playerid = fp.playerid
+HAVING ((z.ip > 0) AND (z.pos = 'P'))
+ORDER BY z.war DESC
+INTO OUTFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//JuneRankingsPitchers.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY "\n";
+
+/*Newest iteration pitchers and hitters
+/*Pitchers
+SELECT DISTINCT z.playerid, z.name, 'P', z.ip, z.war, ROUND(z.war/z.ip*200,1), ' ' AS DHWAR, fp.owner
+FROM pitcher2021June AS z
+LEFT JOIN finalplayers AS fp ON CAST(z.playerid AS SIGNED) = CAST(fp.playerid AS SIGNED)
+HAVING ((z.ip > 0))
+ORDER BY z.war DESC
+INTO OUTFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//JulyRankingsPitchers.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY "\n";
+
+/*Hitters
+SELECT DISTINCT z.playerid, z.name, IFNULL(z.rpos,'DH'), z.pa, z.war, z.prorProj, z.DHWAR, fp.owner
+FROM(SELECT h.playerid, h.name, f.rpos, h.pa, h.war AS WAR, ROUND(h.war/h.pa*700,1) AS prorProj, ROUND(h.off/10.1 + 2.14*h.pa/700 - 17.5/10.1/h.pa/700,1) AS DHWAR
+FROM hitter2021 AS h
+LEFT JOIN (SELECT DISTINCT c.playerid, c.name,
+REPLACE(c.cpos,'RF','OF') AS rpos
+FROM
+(SELECT r.name, r.pos, r.playerid,
+REPLACE(r.lpos,'CF','OF') AS cpos
+FROM(SELECT l.name, l.pos, l.playerid, l.g, 
+REPLACE(l.pos,'LF','OF') AS lpos
+FROM (SELECT* FROM fielding2020
+	UNION
+	SELECT* FROM fielding2021
+WHERE g > 9) AS l) AS r) AS c) AS f ON CAST(h.playerid AS SIGNED) = CAST(f.playerid AS SIGNED)
+LEFT JOIN hitter2021 AS h2020 ON CAST(h2020.playerid AS SIGNED) = CAST(h.playerid AS SIGNED)) AS z 
+LEFT JOIN finalplayers as fp ON CAST(z.playerid AS SIGNED) = CAST(fp.playerid AS SIGNED)
+HAVING z.pa > 0
+ORDER BY z.war DESC
+INTO OUTFILE 'C://ProgramData//MySQL//MySQL Server 8.0//Uploads//FinalRankingsHitters.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY "\n";

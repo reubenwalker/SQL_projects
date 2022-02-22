@@ -1,0 +1,105 @@
+/*Using Lahman Baseball Database: https://www.seanlahman.com/baseball-archive/statistics/
+
+/*Ten Heaviest Rookies:*/
+SELECT nameFirst, nameLast, weight, year(debut)
+FROM people
+ORDER BY weight DESC
+LIMIT 10;
+
+/*Most homeruns in 1977*/
+SELECT p.nameFirst, p.nameLast, b.HR, t.name AS team, b.yearID
+FROM batting b
+    JOIN people p ON p.playerID = b.playerID
+    JOIN teams t ON t.ID = b.team_ID
+WHERE b.YearID = 1977
+ORDER BY b.HR DESC
+LIMIT 5;
+
+/*Highest ERA for Cy Young winners:*/
+SELECT people.playerID, people.nameFirst, people.nameLast, ap.yearID, 
+    9*SUM(pitching.ER)/(SUM(pitching.Ipouts)/3) AS ERA
+FROM awardsplayers ap 
+    JOIN pitching pitching ON pitching.playerID = ap.playerID AND pitching.yearID = ap.yearID
+    JOIN people ON people.playerID = pitching.playerID
+WHERE ap.awardID = 'Cy Young Award'
+GROUP BY people.playerID, people.nameFirst, people.nameLast, ap.yearID
+ORDER BY ERA DESC
+LIMIT 5;
+
+/*Youngest debut this century:*/
+SELECT nameFirst, nameLast, birth_date, debut_date, 
+timestampdiff(day, birth_date, debut_date)/365.25 AS debut_age
+FROM people
+WHERE debut_date IS NOT NULL AND birth_date IS NOT NULL
+    AND debut_date > '2000-01-01'
+ORDER BY debut_age
+LIMIT 5;
+
+/*Best single-season zone rating in history:*/
+SELECT people.nameFirst, people.nameLast, fielding.yearID, fielding.POS, fielding.ZR FROM fielding JOIN people ON fielding.playerID = people.playerID WHERE ZR IS NOT NULL ORDER BY ZR DESC LIMIT 5;
+
+/*All MLB players born in Tacoma:*/
+SELECT p.nameFirst, p.nameLast, p.birthCity, p.birthState, p.birthYear FROM people AS p WHERE birthCity = 'Tacoma' ORDER BY birthYear DESC;
+
+/*Pitchers career IP from Tacoma: */
+SELECT p.nameFirst, p.nameLast, p.birthCity, p.birthState, p.birthYear, SUM(pi.IPouts) AS “Career IP” FROM pitching AS pi INNER JOIN people AS p ON pi.playerID = p.playerID WHERE birthCity = 'Tacoma'ORDER BY birthYear DESC; 
+
+/*Hitters career PA from Tacoma:*/
+SELECT p.nameFirst, p.nameLast, p.birthCity, p.birthState, p.birthYear, SUM(b.AB + b.BB + b.HBP) AS “Career PA” FROM batting AS b INNER JOIN people AS p ON b.playerID = p.playerID WHERE birthCity = 'Tacoma' GROUP BY p.playerID ORDER BY birthYear DESC;
+
+
+/*All WA state colleges:*/
+SELECT* FROM schools WHERE state = "WA";
+
+/*All players from WA state colleges:*/
+SELECT c.playerID
+FROM collegeplaying AS c 
+JOIN schools AS s ON c.schoolID = s.schoolID
+WHERE s.schoolID = (“washington” OR “washst”);
+
+/*Either UW or WSU:*/
+SELECT name_full AS College FROM schools WHERE schoolID = "washington" OR schoolID = "washst";
+
+/*Number of players attending UW or WSU*/
+SELECT schoolID AS "College", COUNT(DISTINCT playerID) AS "Number of MLB Players" FROM collegeplaying WHERE schoolID = "washington" OR schoolID = "washst" GROUP BY schoolID;
+
+/*All MLB players from Washington schools with school name*/
+SELECT s.College, COUNT(DISTINCT c.playerID) AS MLBPlayers FROM collegeplaying AS c JOIN (SELECT name_full AS College, schoolID FROM schools WHERE schoolID = "washington" OR schoolID = "washst" OR schoolID = "wwashngton" OR schoolID = "cwashngton") AS s ON s.schoolID = c.schoolID GROUP BY c.schoolID ORDER BY MLBPlayers DESC;
+
+
+
+/*Western’s Single Player:*/
+SELECT p.nameFirst, p.nameLast, b.HR, b.yearID 
+FROM people as p JOIN batting as b 
+ON p.playerID = b.playerID 
+WHERE p.playerID = "repozro01";
+
+/*Central’s Two Players (not complete):*/
+SELECT p.nameFirst, p.nameLast, b.AB, pi.IPouts, b.yearID 
+FROM people as p 
+JOIN batting as b 
+ON p.playerID = b.playerID 
+JOIN collegeplaying as c
+ON p.playerID = c.playerID
+JOIN pitching AS pi
+ON p.playerID = pi.playerID
+WHERE c.schoolID = "cwashngton";
+
+/*Goal: All Dodgers 2B from 2019 ordered by plate appearance
+All 2019 player years at 2B:*/
+SELECT p.nameFirst, p.nameLast, f.POS, (b.AB+b.BB+b.HBP) AS PA, b.yearID  
+FROM (people AS p JOIN batting AS b ON p.playerID = b.playerID) 
+JOIN fielding AS f ON p.playerID = f.playerID 
+WHERE (b.yearID = 2019 AND f.POS = "2B")
+GROUP BY p.playerID
+ORDER BY PA DESC
+LIMIT 10;
+
+/*All Dodgers 2B from 2019 ranked by PA*/
+SELECT DISTINCT p.playerID, p.nameFirst, p.nameLast, t.name, f.POS, (b.AB+b.BB+b.HBP) AS PA, b.yearID
+FROM people p 
+JOIN fielding f ON p.playerID = f.playerID
+JOIN batting b ON p.playerID = b.playerID
+JOIN teams t ON b.teamID = t.teamID 
+WHERE (b.yearID = 2019 AND f.POS = "2B" AND t.name = "Los Angeles Dodgers")
+ORDER BY PA DESC;
